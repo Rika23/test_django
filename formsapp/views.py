@@ -12,7 +12,8 @@ def index(request):
     
     DataFormSet = formset_factory(ItemForm)
     f = Form.objects.first()
-    data['form-TOTAL_FORMS'] = len(f.data)
+    if not f:
+        f = Form.objects.create(data={})
     init_data = [{'value' : v} for k,v in f.data.items()]
     if request.method == 'POST':
         data_formset = DataFormSet(request.POST)

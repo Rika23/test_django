@@ -1,69 +1,28 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<style>
-input[type=text], select {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 1px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
+{% load staticfiles %}
+<html lang="en">
+  <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Home</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="{% static 'formsapp/javascripts/forms.js' %}"></script>
+	<link rel="stylesheet" href="{% static 'formsapp/css/style.css' %}">
 
-input[type=submit], button {
-    width: 40%;
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 5px 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+  </head>
+	<body>
 
-input[type=submit]:hover {
-    background-color: #45a049;
-}
+		<form method="post" action="">
+			{% csrf_token %}
+			{{ data_formset.management_form }}
 
-div {
-    border-radius: 5px;
-    background-color: #f2f2f2;
-    padding: 10px;
-}
-
-form {
-    width: 300px;
-    margin: 0 auto;
-}
-</style>
-
-
-
-
-<form method="post" action="">
-	{% csrf_token %}
-    {{ data_formset.management_form }}
-
-    {% for form in data_formset %}
-        <div>
-             {{ form.value }}
-        </div>
-    {% endfor %}
-    <input type="submit" value="Submit" />
-    <button type="button" id="add-another">add another</button>
-</form>
-
-<script type="text/javascript">
-$( "#add-another" ).click(function() {
-	var formCount = parseInt($("[name='form-TOTAL_FORMS']").val());
-	console.log(formCount);
-	var newForm = $('form').find('div').last().clone();//.appendTo('form');
-	newForm.find('input').each(function(index, elem){
-        elem.id = elem.id.replace(/\d/g, formCount) 
-        elem.name = elem.name.replace(/\d/g, formCount)
-        elem.value = ""
-    });
-	$("[name='form-TOTAL_FORMS']").val(formCount + 1);
-	$('form').find('div').last().after(newForm)
-  });
-</script>
+			{% for form in data_formset %}
+				<div>
+					 {{ form.value }}
+				</div>
+			{% endfor %}
+			<input type="submit" value="Submit" />
+			<button type="button" id="add-another">Add field</button>
+		</form>
+	</body>
+</html>
